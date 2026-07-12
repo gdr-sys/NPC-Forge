@@ -29,22 +29,22 @@ export function GeneratorTab({ setting, onSettingChange, accent, onSaved }: Prop
     setIsGenerating(true);
     setSaveStatus("idle");
     setTimeout(() => {
-      setNpc(generateNPC(setting));
+      setNpc(generateNPC(setting, lang));
       setIsGenerating(false);
       try { navigator.vibrate?.(30); } catch { /* noop */ }
     }, 180);
-  }, [setting]);
+  }, [setting, lang]);
 
   const handleRegen = useCallback((field: keyof GeneratedNPC) => {
     if (!npc) return;
     setRegenField(field);
     setTimeout(() => {
-      const val = regenerateField(npc.setting, field);
+      const val = regenerateField(npc.setting, field, lang);
       setNpc((prev) => (prev ? { ...prev, [field]: val } : prev));
       setRegenField(null);
       try { navigator.vibrate?.(15); } catch { /* noop */ }
     }, 220);
-  }, [npc]);
+  }, [npc, lang]);
 
   const handleSave = useCallback(async () => {
     if (!npc || saveStatus !== "idle") return;
